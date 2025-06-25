@@ -1,0 +1,79 @@
+import 'package:flutter/material.dart';
+
+void main() {
+runApp(
+MaterialApp(
+home: homeApp()
+)
+);
+}
+
+class homeApp extends StatefulWidget{
+@override
+myApp createState(){
+return myApp();
+}
+}
+
+class myApp extends State<homeApp> {
+var counter = 0;
+
+void incrementCounter() {
+setState(() {
+counter++;
+});
+}
+
+Widget build(BuildContext context) {
+return Scaffold(
+backgroundColor:Colors.blueGrey[300] ,
+appBar: AppBar(
+title: Row(
+children: [
+Icon(Icons.email),
+Text(
+"im in app bar",
+style: TextStyle(fontSize: 25, backgroundColor: Colors.yellow),
+),
+],
+),
+backgroundColor: Colors.red[400],
+),
+
+body: Center(
+child: Column(
+children: [
+Container(
+child: Text("inside the body",
+style: TextStyle(fontSize: 25,
+color: Colors.yellow,
+fontWeight: FontWeight.bold),
+),
+alignment: Alignment.center,
+color: Colors.blue,
+width: 300,
+height: 30,
+),
+Text("counting is $counter",
+style: TextStyle(
+fontSize: 20,
+fontWeight: FontWeight.bold ),),
+ElevatedButton(
+onPressed: () {
+print("button is pressed");
+incrementCounter();
+},
+child: Text("Button for understanding"),
+),
+],
+),
+),
+
+floatingActionButton: FloatingActionButton(
+onPressed: () {},
+child: Icon(Icons.add),
+backgroundColor: Colors.blueGrey,
+),
+);
+}
+}
