@@ -1,0 +1,107 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int counter = 0;
+  List<String> counterHistory = [];
+
+  void _incrementCounter() {
+    setState(() {
+      counter++;
+      counterHistory.add("Incremented to $counter");
+    });
+  }
+
+  void _decrementCounter() {
+    setState(() {
+      counter--;
+      counterHistory.add("Decremented to $counter");
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: "Counter App",
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "Program 7: Counter App Program",
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.blueAccent,
+        ),
+        body: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Text(
+                "Counter:",
+                style: TextStyle(fontSize: 20, color: Colors.blue[900]),
+              ),
+              Container(
+                padding: EdgeInsets.all(16),
+                margin: EdgeInsets.symmetric(vertical: 10),
+                color: Colors.cyan,
+                child: Text(
+                  counter.toString(),
+                  style: TextStyle(fontSize: 28),
+                ),
+                alignment: Alignment.center,
+                width: 200,
+                height: 100,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: _incrementCounter,
+                    child: Text("Increment"),
+                  ),
+                  SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: _decrementCounter,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.redAccent,
+                    ),
+                    child: Text("Decrement"),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              Text(
+                "Counter History:",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: counterHistory.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: Icon(Icons.history),
+                      title: Text(counterHistory[index]),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        backgroundColor: Colors.blueGrey[100],
+        floatingActionButton: FloatingActionButton(
+          onPressed: _incrementCounter,
+          child: Icon(Icons.add),
+          backgroundColor: Colors.orange,
+        ),
+      ),
+    );
+  }
+}
