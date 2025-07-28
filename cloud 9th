@@ -1,0 +1,100 @@
+STEP 2: Install Java on EC2
+bash
+Copy
+Edit
+sudo apt-get update
+java -version
+Create JVM folder:
+
+bash
+Copy
+Edit
+sudo mkdir /usr/lib/jvm
+sudo chmod 777 /usr/lib/jvm
+From your local machine, copy the JDK to EC2:
+
+bash
+Copy
+Edit
+scp -i your-key.pem jdk-xxx.tar.gz ubuntu@<EC2_PUBLIC_IP>:/usr/lib/jvm
+On EC2:
+
+bash
+Copy
+Edit
+cd /usr/lib/jvm
+tar zxvf jdk-xxx.tar.gz
+sudo nano /etc/environment
+Add this line:
+
+bash
+Copy
+Edit
+JAVA_HOME="/usr/lib/jvm/<your-jdk-folder>"
+Reload environment:
+
+bash
+Copy
+Edit
+source /etc/environment
+
+java code
+import java.sql.*;
+
+public class JdbcCrudDemo {
+    static final String JDBC_URL = "jdbc:mysql://<RDS_ENDPOINT>:3306/your_database";
+    static final String JDBC_USER = "your_username";
+    static final String JDBC_PASS = "your_password";
+
+    public static void main(String[] args) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASS);
+
+            // INSERT
+            PreparedStatement insertStmt = conn.prepareStatement(
+              "INSERT INTO employees (name, email, country, salary) VALUES (?, ?, ?, ?)");
+            insertStmt.setString(1, "Alice");
+            insertStmt.setString(2, "alice@example.com");
+            insertStmt.setString(3, "USA");
+            insertStmt.setDouble(4, 50000);
+            insertStmt.executeUpdate();
+
+            // SELECT
+            Statement selectStmt = conn.createStatement();
+            ResultSet rs = selectStmt.executeQuery("SELECT * FROM employees");
+            while (rs.next()) {
+                System.out.println(
+                    rs.getInt("id") + ", " +
+                    rs.getString("name") + ", " +
+                    rs.getString("email") + ", " +
+                    rs.getString("country") + ", " +
+                    rs.getDouble("salary"));
+            }
+
+            // UPDATE
+            PreparedStatement updateStmt = conn.prepareStatement(
+              "UPDATE employees SET salary = ? WHERE name = ?");
+            updateStmt.setDouble(1, 60000);
+            updateStmt.setString(2, "Alice");
+            updateStmt.executeUpdate();
+
+            // DELETE
+            PreparedStatement deleteStmt = conn.prepareStatement(
+              "DELETE FROM employees WHERE name = ?");
+            deleteStmt.setString(1, "Alice");
+            deleteStmt.executeUpdate();
+
+            // Close all resources
+            deleteStmt.close();
+            updateStmt.close();
+            rs.close();
+            selectStmt.close();
+            insertStmt.close();
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
