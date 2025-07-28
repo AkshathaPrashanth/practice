@@ -1,44 +1,32 @@
 STEP 2: Install Java on EC2
-bash
-Copy
-Edit
 sudo apt-get update
 java -version
 Create JVM folder:
 
-bash
-Copy
-Edit
+
 sudo mkdir /usr/lib/jvm
 sudo chmod 777 /usr/lib/jvm
 From your local machine, copy the JDK to EC2:
 
-bash
-Copy
-Edit
+
+
 scp -i your-key.pem jdk-xxx.tar.gz ubuntu@<EC2_PUBLIC_IP>:/usr/lib/jvm
 On EC2:
-
-bash
-Copy
-Edit
 cd /usr/lib/jvm
 tar zxvf jdk-xxx.tar.gz
 sudo nano /etc/environment
 Add this line:
 
-bash
-Copy
-Edit
+
+
 JAVA_HOME="/usr/lib/jvm/<your-jdk-folder>"
 Reload environment:
 
-bash
-Copy
-Edit
+
+
 source /etc/environment
 
-java code
+java code:
 import java.sql.*;
 
 public class JdbcCrudDemo {
